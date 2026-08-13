@@ -1,0 +1,22 @@
+# field hypothesis: Signal is the argv of uname/hostnamectl. auditd EXECVE carries full argv.
+title: System information discovery via uname
+id: 7b293116-5d08-5d87-ac7a-3bcf4459ebf6
+status: experimental
+description: System information discovery via uname
+author: rule-synth
+date: 2026/08/12
+tags:
+- attack.discovery
+- attack.t1082
+logsource:
+  product: linux
+  category: process_creation
+detection:
+  sel:
+    cmdline|contains:
+    - uname -a
+    - uname -r
+    - hostnamectl
+    - /etc/os-release
+  condition: sel
+level: low

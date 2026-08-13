@@ -1,0 +1,18 @@
+# field hypothesis: ptrace attach is a syscall auditd records directly, no argv needed.
+title: Process injection via ptrace
+id: f5ef126d-dbfd-5975-b013-0b89411154cb
+status: experimental
+description: Process injection via ptrace
+author: rule-synth
+date: 2026/08/12
+tags:
+- attack.defense_evasion
+- attack.t1055.008
+logsource:
+  product: linux
+  category: process_access
+detection:
+  sel:
+    syscall: ptrace
+  condition: sel
+level: high

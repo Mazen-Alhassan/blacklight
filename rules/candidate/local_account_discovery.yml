@@ -1,0 +1,21 @@
+# field hypothesis: Reading /etc/passwd with cat/getent shows up in argv.
+title: Local account discovery via passwd read
+id: cd3dce25-59c6-50ee-ad44-85bd2a2fcdbe
+status: experimental
+description: Local account discovery via passwd read
+author: rule-synth
+date: 2026/08/12
+tags:
+- attack.discovery
+- attack.t1087.001
+logsource:
+  product: linux
+  category: process_creation
+detection:
+  sel:
+    exe|endswith:
+    - /cat
+    - /getent
+    cmdline|contains: /etc/passwd
+  condition: sel
+level: low

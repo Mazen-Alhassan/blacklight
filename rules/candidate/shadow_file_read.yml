@@ -1,0 +1,19 @@
+# field hypothesis: HYPOTHESIS UNTESTED UNTIL RUN: assumes a file-open event for /etc/shadow. The
+#   containerized sensor's path watch is inode/namespace bound, so target opens are unseen.
+title: Shadow file accessed
+id: e55903f1-9899-5611-ae83-92162c717f29
+status: experimental
+description: Shadow file accessed
+author: rule-synth
+date: 2026/08/12
+tags:
+- attack.credential_access
+- attack.t1003.008
+logsource:
+  product: linux
+  category: file_event
+detection:
+  sel:
+    TargetFilename|endswith: /etc/shadow
+  condition: sel
+level: high

@@ -1,0 +1,35 @@
+## Lab audit rule set. Loaded by the sensor at start.
+## Scope is deliberately broad. Lab-vs-infrastructure separation happens in the
+## normalizer by walking the process tree, not by filtering here, because auid
+## based filtering is not reliable for docker exec'd processes.
+
+# Reset and raise the backlog. The kernel default is 64, which drops events under
+# any real load. Verified: a 200-exec burst produced lost 0 at 16384.
+-D
+-b 16384
+--backlog_wait_time 0
+
+# Process execution. The spine of the whole project.
+-a always,exit -F arch=b64 -S execve -S execveat -k lab_exec
+-a always,exit -F arch=b32 -S execve -S execveat -k lab_exec
+
+# Outbound network. connect() carries the destination sockaddr.
+-a always,exit -F arch=b64 -S connect -k lab_net
+
+# Process injection and debugging.
+-a always,exit -F arch=b64 -S ptrace -k lab_ptrace
+
+# Kernel module load.
+-a always,exit -F arch=b64 -S init_module -S finit_module -k lab_module
+
+# Credential access. Watches on the files that matter.
+-w /etc/shadow -p rwa -k lab_cred
+-w /etc/passwd -p wa -k lab_cred
+-w /etc/sudoers -p wa -k lab_cred
+-w /root/.ssh -p rwa -k lab_cred
+
+# Persistence surfaces.
+-w /etc/cron.d -p wa -k lab_persist
+-w /etc/crontab -p wa -k lab_persist
+-w /var/spool/cron -p wa -k lab_persist
+-w /etc/systemd/system -p wa -k lab_persist

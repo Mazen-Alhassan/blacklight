@@ -1,0 +1,26 @@
+# field hypothesis: Beaconing curl to a non-local host. Filter localhost to keep health checks out.
+title: HTTP request to external host
+id: c45bce65-cf93-5fa9-bf10-8f3f8dff6484
+status: experimental
+description: HTTP request to external host
+author: rule-synth
+date: 2026/08/12
+tags:
+- attack.command_and_control
+- attack.t1071.001
+logsource:
+  product: linux
+  category: process_creation
+detection:
+  sel:
+    exe|endswith:
+    - /curl
+    - /wget
+    cmdline|contains: http
+  localhost:
+    cmdline|contains:
+    - 127.0.0.1
+    - localhost
+    - 0.0.0.0
+  condition: sel and not localhost
+level: medium

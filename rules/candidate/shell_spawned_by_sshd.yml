@@ -1,0 +1,22 @@
+# field hypothesis: HYPOTHESIS: assumes ParentImage is sshd. In this lab the parent is always the harness
+#   shell, so the field is present but never that value.
+title: Shell spawned by sshd
+id: 1d6b321a-8684-5e70-9956-4db90bc2cdec
+status: experimental
+description: Shell spawned by sshd
+author: rule-synth
+date: 2026/08/12
+tags:
+- attack.execution
+- attack.t1059.004
+logsource:
+  product: linux
+  category: process_creation
+detection:
+  sel:
+    ParentImage|endswith: /sshd
+    exe|endswith:
+    - /sh
+    - /bash
+  condition: sel
+level: medium

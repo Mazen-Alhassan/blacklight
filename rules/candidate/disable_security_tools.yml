@@ -1,0 +1,23 @@
+# field hypothesis: Stopping logging or the firewall from the command line.
+title: Security tooling disabled
+id: a92953e4-8d03-5d4f-8348-b09f2a575ee4
+status: experimental
+description: Security tooling disabled
+author: rule-synth
+date: 2026/08/12
+tags:
+- attack.defense_evasion
+- attack.t1562.001
+logsource:
+  product: linux
+  category: process_creation
+detection:
+  sel:
+    cmdline|contains:
+    - systemctl stop rsyslog
+    - systemctl stop auditd
+    - setenforce 0
+    - ufw disable
+    - service auditd stop
+  condition: sel
+level: high

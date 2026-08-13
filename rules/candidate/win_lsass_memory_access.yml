@@ -1,0 +1,20 @@
+# field hypothesis: HYPOTHESIS WRONG ON THIS LAB: assumes Sysmon EventID 10 GrantedAccess. Not present.
+title: LSASS memory access (Sysmon)
+id: 64f35a78-6855-5f08-9f74-67e901b415fc
+status: experimental
+description: LSASS memory access (Sysmon)
+author: rule-synth
+date: 2026/08/12
+tags:
+- attack.credential_access
+- attack.t1003.001
+logsource:
+  product: windows
+  category: process_access
+  service: sysmon
+detection:
+  sel:
+    TargetImage|endswith: \lsass.exe
+    GrantedAccess: '0x1010'
+  condition: sel
+level: high

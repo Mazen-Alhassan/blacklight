@@ -1,0 +1,23 @@
+# field hypothesis: Loading a module via insmod/modprobe. Note: both are symlinks to kmod, so the binary
+#   path is /bin/kmod; the tool name only survives in argv[0]. Match cmdline.
+title: Kernel module load via insmod or modprobe
+id: 75b99e78-f8ba-531f-b182-737fc1901005
+status: experimental
+description: Kernel module load via insmod or modprobe
+author: rule-synth
+date: 2026/08/12
+tags:
+- attack.persistence
+- attack.t1547.006
+logsource:
+  product: linux
+  category: process_creation
+detection:
+  sel:
+    cmdline|startswith:
+    - insmod
+    - modprobe
+    - /sbin/insmod
+    - /sbin/modprobe
+  condition: sel
+level: high

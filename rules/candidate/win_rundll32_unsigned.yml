@@ -1,0 +1,21 @@
+# field hypothesis: HYPOTHESIS WRONG: assumes Sysmon Hashes and IntegrityLevel. Linux auditd has neither.
+title: Suspicious rundll32 execution (Sysmon)
+id: 6c54507d-cadd-5e56-8a46-199ba4d9e980
+status: experimental
+description: Suspicious rundll32 execution (Sysmon)
+author: rule-synth
+date: 2026/08/12
+tags:
+- attack.defense_evasion
+- attack.t1218.011
+logsource:
+  product: windows
+  category: process_creation
+  service: sysmon
+detection:
+  sel:
+    Image|endswith: \rundll32.exe
+    Hashes|contains: MD5=
+    IntegrityLevel: System
+  condition: sel
+level: high

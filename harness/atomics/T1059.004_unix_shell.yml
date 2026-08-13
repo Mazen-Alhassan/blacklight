@@ -1,0 +1,19 @@
+technique: T1059.004
+name: Unix Shell
+tactics: [TA0002]
+# Command and Scripting Interpreter: Unix Shell. Picked as the phase-1 canary
+# because it is trivial to trigger and trivial to observe.
+atomics:
+  - id: T1059.004-1
+    name: Interactive shell runs reconnaissance one-liner
+    user: admin
+    command: sh -c 'id; whoami; uname -a; cat /etc/passwd | head -1'
+    variants:
+      - name: renamed_binary
+        command: cp /bin/sh /tmp/notashell && /tmp/notashell -c 'id; whoami'
+      - name: env_indirection
+        command: A=id; B=whoami; sh -c "$A; $B"
+  - id: T1059.004-2
+    name: Base64 encoded payload decoded and piped to shell
+    user: admin
+    command: echo 'aWQ7IHVuYW1lIC1h' | base64 -d | sh

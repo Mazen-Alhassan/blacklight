@@ -1,0 +1,109 @@
+<!doctype html><html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Detection Lab Report</title><style>
+:root{
+  --bg:#ffffff; --mist:#f2f2f3; --fog:#fafafb; --ink:#17191c; --muted:#777b86;
+  --line:#e7e7ea; --peach:#fbe1d1; --sienna:#5d2a1a;
+  --ok:#3f7a52; --noisy:#b07a1e; --partial:#8a6d2f; --broken:#a3402a;
+  --unfirable:#9a9aa0; --none:#e7e7ea;
+  --serif:'Signifier','GT Sectra','Tiempos Headline',ui-serif,Georgia,'Times New Roman',serif;
+  --sans:'Sohne','Inter',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --mono:'SF Mono',ui-monospace,'Menlo','Consolas',monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+  font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1200px;margin:0 auto;padding:40px 32px 80px}
+#hero{background:var(--bg);padding:8px 4px 4px}
+.kicker{font-family:var(--sans);font-size:14px;letter-spacing:.02em;color:var(--muted);
+  text-transform:none;margin:0 0 14px}
+h1{font-family:var(--serif);font-weight:400;font-size:64px;line-height:1.05;
+  letter-spacing:-.015em;margin:0 0 6px}
+h1 .num{font-family:var(--serif)}
+.sub{font-size:18px;color:var(--muted);margin:0 0 30px;max-width:760px}
+.counters{display:flex;gap:14px;flex-wrap:wrap;margin:0 0 30px}
+.counter{background:var(--mist);border-radius:16px;padding:16px 20px;min-width:150px}
+.counter .v{font-family:var(--mono);font-size:26px;font-weight:600;letter-spacing:-.01em}
+.counter .l{font-size:13px;color:var(--muted);margin-top:2px}
+.counter.accent{background:var(--peach);color:var(--sienna)}
+.counter.accent .v{color:var(--sienna)}
+.counter.accent .l{color:var(--sienna);opacity:.85}
+.panel{background:var(--fog);border:1px solid var(--line);border-radius:20px;
+  padding:22px 24px;margin:0 0 22px}
+.panel h2{font-family:var(--serif);font-weight:400;font-size:26px;margin:0 0 4px;letter-spacing:-.01em}
+.panel .note{font-size:13px;color:var(--muted);margin:0 0 18px}
+.matrix{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px}
+.col{flex:1 0 118px;min-width:118px}
+.col .head{font-size:12px;font-weight:600;color:var(--ink);height:30px;
+  border-bottom:1px solid var(--line);margin-bottom:8px;line-height:1.1;
+  display:flex;align-items:flex-end;padding-bottom:4px}
+.cell{border-radius:10px;padding:8px 9px;margin-bottom:6px;font-size:11px;line-height:1.15;
+  border:1px solid transparent;min-height:44px}
+.cell .t{font-family:var(--mono);font-size:10px;opacity:.75}
+.cell .n{font-weight:500;margin-top:2px}
+.cell.validated{background:var(--ok);color:#fff}
+.cell.noisy{background:var(--noisy);color:#fff}
+.cell.partial{background:var(--partial);color:#fff}
+.cell.unfirable{background:#ededf0;color:#6a6a72;border-color:#dededF}
+.cell.broken{background:#fff;color:var(--broken);border:1px dashed var(--broken)}
+.cell.untested{background:#f4f4f5;color:#9a9aa0}
+.cell.none{background:transparent;color:#c4c4c8;border:1px solid var(--none)}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:14px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.dot{width:11px;height:11px;border-radius:3px;display:inline-block}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-weight:600;color:var(--muted);font-size:12px;
+  border-bottom:1px solid var(--line);padding:8px 10px}
+td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+td.mono,.mono{font-family:var(--mono);font-size:13px}
+.verdict{font-weight:600}
+.v-ship{color:var(--ok)} .v-noisy{color:var(--noisy)} .v-broken{color:var(--broken)}
+.pill{display:inline-block;font-size:11px;font-weight:600;padding:2px 9px;border-radius:9999px}
+.pill.validated{background:#e7f1ea;color:var(--ok)}
+.pill.noisy{background:#f6ecd8;color:var(--noisy)}
+.pill.partial{background:#f1ecdc;color:var(--partial)}
+.pill.unfirable{background:#ededf0;color:#6a6a72}
+.pill.broken{background:#f6e5e0;color:var(--broken)}
+.pill.untested{background:#f0f0f1;color:#8a8a92}
+.foot{font-size:12px;color:var(--muted);margin-top:26px}
+</style></head><body><div class="wrap">
+<div id="hero">
+  <p class="kicker">detection-lab · validated against live attack telemetry</p>
+  <h1><span class="num">9 / 24</span> rules validated</h1>
+  <p class="sub">Every rule ran against real kernel telemetry from attacks executed in a
+    throwaway Linux lab, and against 150 windows of ordinary activity.
+    Each one carries a measured true-positive count and a false-positive rate, not a guess.</p>
+  <div class="counters">
+    <div class="counter accent"><div class="v">16</div>
+      <div class="l">ATT&CK techniques covered</div></div>
+    <div class="counter"><div class="v">0.00%</div><div class="l">median FP rate (firing rules)</div></div>
+    <div class="counter"><div class="v">1 ms</div><div class="l">median detection latency</div></div>
+    <div class="counter"><div class="v">42</div><div class="l">attack windows</div></div>
+    <div class="counter"><div class="v">676</div><div class="l">in-lab events observed</div></div>
+  </div>
+  <div class="panel">
+    <h2>Coverage matrix</h2>
+    <p class="note">Tactic columns, technique cells, coloured by what the harness measured.
+      Solid means it fires; dashed means the rule references a field this lab does not carry.</p>
+    <div class="matrix"><div class="col"><div class="head">Execution</div><div class="cell partial"><div class="t">T1059.004</div><div class="n">Unix Shell</div></div><div class="cell none"><div class="t">T1059.006</div><div class="n">Python</div></div><div class="cell noisy"><div class="t">T1053.003</div><div class="n">Cron</div></div><div class="cell none"><div class="t">T1204</div><div class="n">User Execution</div></div></div><div class="col"><div class="head">Persistence</div><div class="cell validated"><div class="t">T1547.006</div><div class="n">Kernel Module</div></div><div class="cell noisy"><div class="t">T1053.003</div><div class="n">Cron Job</div></div><div class="cell none"><div class="t">T1543.002</div><div class="n">Systemd Service</div></div><div class="cell none"><div class="t">T1546.004</div><div class="n">Shell Init</div></div></div><div class="col"><div class="head">Priv Esc</div><div class="cell validated"><div class="t">T1548.003</div><div class="n">Sudo</div></div><div class="cell none"><div class="t">T1548.001</div><div class="n">Setuid</div></div><div class="cell validated"><div class="t">T1055.008</div><div class="n">Ptrace</div></div><div class="cell none"><div class="t">T1068</div><div class="n">Exploit</div></div></div><div class="col"><div class="head">Defense Evasion</div><div class="cell validated"><div class="t">T1070.003</div><div class="n">Clear History</div></div><div class="cell validated"><div class="t">T1222.002</div><div class="n">File Perms</div></div><div class="cell validated"><div class="t">T1140</div><div class="n">Deobfuscate</div></div><div class="cell unfirable"><div class="t">T1562.001</div><div class="n">Disable Tools</div></div><div class="cell validated"><div class="t">T1055.008</div><div class="n">Ptrace</div></div><div class="cell none"><div class="t">T1036.005</div><div class="n">Masquerade</div></div></div><div class="col"><div class="head">Cred Access</div><div class="cell validated"><div class="t">T1552.001</div><div class="n">Creds in Files</div></div><div class="cell unfirable"><div class="t">T1003.008</div><div class="n">Shadow</div></div><div class="cell broken"><div class="t">T1003.001</div><div class="n">LSASS</div></div><div class="cell none"><div class="t">T1110</div><div class="n">Brute Force</div></div></div><div class="col"><div class="head">Discovery</div><div class="cell noisy"><div class="t">T1082</div><div class="n">System Info</div></div><div class="cell none"><div class="t">T1033</div><div class="n">Owner/User</div></div><div class="cell validated"><div class="t">T1087.001</div><div class="n">Accounts</div></div><div class="cell noisy"><div class="t">T1057</div><div class="n">Process</div></div><div class="cell noisy"><div class="t">T1083</div><div class="n">File/Dir</div></div><div class="cell none"><div class="t">T1518.001</div><div class="n">Security SW</div></div></div><div class="col"><div class="head">Collection</div><div class="cell noisy"><div class="t">T1560.001</div><div class="n">Archive</div></div><div class="cell none"><div class="t">T1074</div><div class="n">Staging</div></div></div><div class="col"><div class="head">C2</div><div class="cell noisy"><div class="t">T1105</div><div class="n">Ingress Transfer</div></div><div class="cell validated"><div class="t">T1071.001</div><div class="n">Web Protocol</div></div><div class="cell none"><div class="t">T1090</div><div class="n">Proxy</div></div></div><div class="col"><div class="head">Impact</div><div class="cell none"><div class="t">T1496</div><div class="n">Resource Hijack</div></div><div class="cell none"><div class="t">T1485</div><div class="n">Data Destruction</div></div></div><div class="col"><div class="head">Persistence (Win)</div><div class="cell broken"><div class="t">T1053.005</div><div class="n">Scheduled Task</div></div><div class="cell broken"><div class="t">T1547.001</div><div class="n">Run Key</div></div></div><div class="col"><div class="head">Defense Evasion (Win)</div><div class="cell broken"><div class="t">T1218.011</div><div class="n">Rundll32</div></div></div></div>
+    <div class="legend"><span><i class="dot" style="background:var(--ok);"></i>validated</span><span><i class="dot" style="background:var(--noisy);"></i>too noisy</span><span><i class="dot" style="background:var(--partial);"></i>partial</span><span><i class="dot" style="background:var(--unfirable);"></i>unfirable</span><span><i class="dot" style="background:var(--broken);;border:1px dashed var(--broken)"></i>broken (field missing)</span><span><i class="dot" style="background:var(--none);"></i>no rule</span></div>
+  </div>
+  <div class="panel">
+    <h2>Worst offenders</h2>
+    <p class="note">One clean shipper, one too noisy to keep, one proven broken.
+      The broken row is the point: the harness caught a rule whose field does not exist here.</p>
+    <table><thead><tr><th>RULE</th><th>FIRES ON ATTACK</th><th>FP RATE</th><th>VERDICT</th></tr></thead><tbody><tr><td class="mono">base64_decode_pipe_shell</td><td class="mono">2/2</td><td class="mono">0.00%</td><td class="verdict v-ship">ship it</td></tr><tr><td class="mono">sysinfo_discovery</td><td class="mono">2/2</td><td class="mono">17.33%</td><td class="verdict v-noisy">too noisy</td></tr><tr><td class="mono">win_lsass_memory_access</td><td class="mono">0/2</td><td class="mono">-</td><td class="verdict v-broken">broken, field missing</td></tr></tbody></table>
+  </div>
+</div>
+<div class="panel">
+  <h2>Every rule, measured</h2>
+  <p class="note">Status taxonomy: validated (fires on all attack windows, FP at or under
+    1%), noisy (fires but too many FPs), partial
+    (fires on some windows), unfirable (mapped fields, never fired), broken (references a
+    missing field), untested (no atomic exercises it).</p>
+  <table><thead><tr><th>RULE</th><th>STATUS</th><th>ATT&CK</th><th>FIRES</th><th>FP RATE</th><th>LATENCY</th></tr></thead><tbody><tr><td class="mono">base64_decode_pipe_shell</td><td><span class="pill validated">validated</span></td><td class="mono">T1140</td><td class="mono">2/2</td><td class="mono">0.00%</td><td class="mono">3 ms</td></tr><tr><td class="mono">clear_command_history</td><td><span class="pill validated">validated</span></td><td class="mono">T1070.003</td><td class="mono">2/2</td><td class="mono">0.00%</td><td class="mono">0 ms</td></tr><tr><td class="mono">credentials_in_files</td><td><span class="pill validated">validated</span></td><td class="mono">T1552.001</td><td class="mono">2/2</td><td class="mono">0.00%</td><td class="mono">3 ms</td></tr><tr><td class="mono">external_http_beacon</td><td><span class="pill validated">validated</span></td><td class="mono">T1071.001</td><td class="mono">2/2</td><td class="mono">0.00%</td><td class="mono">0 ms</td></tr><tr><td class="mono">kernel_module_load_exec</td><td><span class="pill validated">validated</span></td><td class="mono">T1547.006</td><td class="mono">2/2</td><td class="mono">0.00%</td><td class="mono">0 ms</td></tr><tr><td class="mono">local_account_discovery</td><td><span class="pill validated">validated</span></td><td class="mono">T1087.001</td><td class="mono">2/2</td><td class="mono">0.00%</td><td class="mono">1 ms</td></tr><tr><td class="mono">permissive_chmod</td><td><span class="pill validated">validated</span></td><td class="mono">T1222.002</td><td class="mono">2/2</td><td class="mono">0.00%</td><td class="mono">1 ms</td></tr><tr><td class="mono">ptrace_process_injection</td><td><span class="pill validated">validated</span></td><td class="mono">T1055.008</td><td class="mono">2/2</td><td class="mono">0.00%</td><td class="mono">32 ms</td></tr><tr><td class="mono">sudo_privilege_enum</td><td><span class="pill validated">validated</span></td><td class="mono">T1548.003</td><td class="mono">2/2</td><td class="mono">0.00%</td><td class="mono">1 ms</td></tr><tr><td class="mono">archive_for_exfil_tar</td><td><span class="pill noisy">noisy</span></td><td class="mono">T1560.001</td><td class="mono">2/2</td><td class="mono">2.00%</td><td class="mono">3 ms</td></tr><tr><td class="mono">cron_persistence</td><td><span class="pill noisy">noisy</span></td><td class="mono">T1053.003</td><td class="mono">2/2</td><td class="mono">6.00%</td><td class="mono">1 ms</td></tr><tr><td class="mono">file_discovery_find</td><td><span class="pill noisy">noisy</span></td><td class="mono">T1083</td><td class="mono">2/2</td><td class="mono">6.00%</td><td class="mono">1 ms</td></tr><tr><td class="mono">ingress_tool_transfer_curl</td><td><span class="pill noisy">noisy</span></td><td class="mono">T1105</td><td class="mono">4/4</td><td class="mono">3.33%</td><td class="mono">1 ms</td></tr><tr><td class="mono">process_discovery_ps</td><td><span class="pill noisy">noisy</span></td><td class="mono">T1057</td><td class="mono">2/2</td><td class="mono">1.33%</td><td class="mono">2 ms</td></tr><tr><td class="mono">sysinfo_discovery</td><td><span class="pill noisy">noisy</span></td><td class="mono">T1082</td><td class="mono">2/2</td><td class="mono">17.33%</td><td class="mono">1 ms</td></tr><tr><td class="mono">unix_shell_recon_oneliner_v2</td><td><span class="pill partial">partial</span></td><td class="mono">T1059.004</td><td class="mono">2/4</td><td class="mono">0.00%</td><td class="mono">0 ms</td></tr><tr><td class="mono">disable_security_tools</td><td><span class="pill unfirable">unfirable</span></td><td class="mono">T1562.001</td><td class="mono">0/2</td><td class="mono">0.00%</td><td class="mono">–</td></tr><tr><td class="mono">driver_load_module</td><td><span class="pill unfirable">unfirable</span></td><td class="mono">T1547.006</td><td class="mono">0/2</td><td class="mono">0.00%</td><td class="mono">–</td></tr><tr><td class="mono">shadow_file_read</td><td><span class="pill unfirable">unfirable</span></td><td class="mono">T1003.008</td><td class="mono">0/2</td><td class="mono">0.00%</td><td class="mono">–</td></tr><tr><td class="mono">shell_spawned_by_sshd</td><td><span class="pill unfirable">unfirable</span></td><td class="mono">T1059.004</td><td class="mono">0/4</td><td class="mono">0.00%</td><td class="mono">–</td></tr><tr><td class="mono">win_lsass_memory_access<div class="foot" style="margin:2px 0 0">unmapped fields: GrantedAccess</div></td><td><span class="pill broken">broken</span></td><td class="mono">T1003.001</td><td class="mono">0/2</td><td class="mono">–</td><td class="mono">–</td></tr><tr><td class="mono">win_registry_run_key<div class="foot" style="margin:2px 0 0">unmapped fields: Details, TargetObject</div></td><td><span class="pill broken">broken</span></td><td class="mono">T1547.001</td><td class="mono">0/2</td><td class="mono">–</td><td class="mono">–</td></tr><tr><td class="mono">win_rundll32_unsigned<div class="foot" style="margin:2px 0 0">unmapped fields: Hashes, IntegrityLevel</div></td><td><span class="pill broken">broken</span></td><td class="mono">T1218.011</td><td class="mono">–</td><td class="mono">–</td><td class="mono">–</td></tr><tr><td class="mono">win_scheduled_task_persistence<div class="foot" style="margin:2px 0 0">unmapped fields: EventID, TaskName</div></td><td><span class="pill broken">broken</span></td><td class="mono">T1053.005</td><td class="mono">0/2</td><td class="mono">–</td><td class="mono">–</td></tr></tbody></table>
+</div>
+<p class="foot">Generated 2026-08-13T16:56:38Z · sensor auditd ·
+  kernel 6.10.14-linuxkit aarch64 · audit events lost: 0 ·
+  session s-622b08</p>
+</div></body></html>

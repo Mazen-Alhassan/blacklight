@@ -1,0 +1,22 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Large or per-run lab byproducts (results.json and telemetry.db are committed on purpose)
+data/audit/
+data/session_audit.log
+data/run.log
+data/diag.txt
+data/render.out
+
+# OS
+.DS_Store
+
+# Build-time reference material, not part of the shipped project
+project-instructions.md
+design/
+
+# CI workflow: push after running: gh auth refresh -s workflow
+.github/workflows/ci.yml

@@ -1,0 +1,19 @@
+# field hypothesis: HYPOTHESIS WRONG: assumes Windows EventID 4698 and TaskName. Field missing.
+title: Scheduled task created (Windows)
+id: 79646a30-cf2f-56b3-92fa-22112c957f25
+status: experimental
+description: Scheduled task created (Windows)
+author: rule-synth
+date: 2026/08/12
+tags:
+- attack.persistence
+- attack.t1053.005
+logsource:
+  product: windows
+  service: security
+detection:
+  sel:
+    EventID: 4698
+    TaskName|contains: \
+  condition: sel
+level: medium

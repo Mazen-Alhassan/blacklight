@@ -1,0 +1,23 @@
+# field hypothesis: tar czf to stage data. Also exactly what backups do.
+title: Data staged into an archive
+id: c44131d4-7407-54f7-a315-b90073e50ddf
+status: experimental
+description: Data staged into an archive
+author: rule-synth
+date: 2026/08/12
+tags:
+- attack.collection
+- attack.t1560.001
+logsource:
+  product: linux
+  category: process_creation
+detection:
+  sel:
+    exe|endswith: /tar
+    cmdline|contains:
+    - czf
+    - -czf
+    - cvf
+    - '-c '
+  condition: sel
+level: medium

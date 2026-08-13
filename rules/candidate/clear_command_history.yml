@@ -1,0 +1,21 @@
+# field hypothesis: History wipe leaves the file path and the clearing verb in argv.
+title: Shell history cleared
+id: cf39befb-325d-59e0-94db-739397adf593
+status: experimental
+description: Shell history cleared
+author: rule-synth
+date: 2026/08/12
+tags:
+- attack.defense_evasion
+- attack.t1070.003
+logsource:
+  product: linux
+  category: process_creation
+detection:
+  sel:
+    cmdline|contains:
+    - .bash_history
+    - history -c
+    - HISTFILE=/dev/null
+  condition: sel
+level: medium

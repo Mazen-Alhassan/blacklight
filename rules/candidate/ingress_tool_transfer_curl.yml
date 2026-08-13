@@ -1,0 +1,26 @@
+# field hypothesis: A downloader writing to a file: curl/wget with an output flag and an http URL.
+title: Ingress tool transfer via curl or wget
+id: 5622b304-96f6-53a6-9721-8ecbaca4f15d
+status: experimental
+description: Ingress tool transfer via curl or wget
+author: rule-synth
+date: 2026/08/12
+tags:
+- attack.command_and_control
+- attack.t1105
+logsource:
+  product: linux
+  category: process_creation
+detection:
+  sel:
+    exe|endswith:
+    - /curl
+    - /wget
+    cmdline|contains: http
+  save:
+    cmdline|contains:
+    - ' -o'
+    - ' -O'
+    - --output
+  condition: sel and save
+level: medium

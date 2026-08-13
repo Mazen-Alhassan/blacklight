@@ -1,0 +1,23 @@
+# field hypothesis: World-writable or setuid chmod on a dropped file.
+title: Overly permissive file mode set
+id: 6d7bc8f2-6631-5c49-94df-5b055f0eb885
+status: experimental
+description: Overly permissive file mode set
+author: rule-synth
+date: 2026/08/12
+tags:
+- attack.defense_evasion
+- attack.t1222.002
+logsource:
+  product: linux
+  category: process_creation
+detection:
+  sel:
+    exe|endswith: /chmod
+    cmdline|contains:
+    - '777'
+    - u+s
+    - '4755'
+    - +s
+  condition: sel
+level: medium

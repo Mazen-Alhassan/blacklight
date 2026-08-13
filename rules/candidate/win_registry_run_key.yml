@@ -1,0 +1,20 @@
+# field hypothesis: HYPOTHESIS WRONG: assumes Sysmon EventID 13 registry TargetObject. No registry on Linux.
+title: Registry run key persistence (Sysmon)
+id: 688f5156-18ba-5ced-8d92-9b03ba619253
+status: experimental
+description: Registry run key persistence (Sysmon)
+author: rule-synth
+date: 2026/08/12
+tags:
+- attack.persistence
+- attack.t1547.001
+logsource:
+  product: windows
+  category: registry_set
+  service: sysmon
+detection:
+  sel:
+    TargetObject|contains: \CurrentVersion\Run
+    Details|contains: .exe
+  condition: sel
+level: medium

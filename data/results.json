@@ -1,0 +1,965 @@
+{
+  "generated_at": "2026-08-13T16:56:38Z",
+  "lab": {
+    "sensor": "auditd",
+    "kernel": "6.10.14-linuxkit",
+    "arch": "aarch64",
+    "target_image": "lab-target:1",
+    "audit_lost": 0
+  },
+  "run": {
+    "session_id": "s-622b08",
+    "events_total": 2509,
+    "events_in_lab": 676,
+    "attack_windows": 42,
+    "benign_windows": 150,
+    "evasion_windows": 3,
+    "noise_threshold": 0.01
+  },
+  "rules": [
+    {
+      "id": "archive_for_exfil_tar",
+      "title": "Data staged into an archive",
+      "file": "rules/candidate/archive_for_exfil_tar.yml",
+      "attack": [
+        "T1560.001"
+      ],
+      "tactics": [
+        "TA0009"
+      ],
+      "level": "medium",
+      "logsource": "linux/process_creation",
+      "status": "noisy",
+      "broken_reason": null,
+      "unmapped_fields": [],
+      "atomics": [
+        "T1560.001-1"
+      ],
+      "attack_windows": 2,
+      "true_positives": 2,
+      "missed": 0,
+      "benign_windows": 150,
+      "false_positives": 3,
+      "fp_rate": 0.02,
+      "median_latency_ms": 3.0,
+      "fp_examples": [
+        {
+          "window": "ci_build",
+          "cmdline": "tar -czf /tmp/src.tgz /etc/hostname",
+          "exe": "/usr/bin/tar"
+        },
+        {
+          "window": "ci_build",
+          "cmdline": "tar -czf /tmp/src.tgz /etc/hostname",
+          "exe": "/usr/bin/tar"
+        },
+        {
+          "window": "ci_build",
+          "cmdline": "tar -czf /tmp/src.tgz /etc/hostname",
+          "exe": "/usr/bin/tar"
+        }
+      ],
+      "evasions": []
+    },
+    {
+      "id": "base64_decode_pipe_shell",
+      "title": "Base64 payload decoded and executed",
+      "file": "rules/candidate/base64_decode_pipe_shell.yml",
+      "attack": [
+        "T1140"
+      ],
+      "tactics": [
+        "TA0005"
+      ],
+      "level": "medium",
+      "logsource": "linux/process_creation",
+      "status": "validated",
+      "broken_reason": null,
+      "unmapped_fields": [],
+      "atomics": [
+        "T1140-1"
+      ],
+      "attack_windows": 2,
+      "true_positives": 2,
+      "missed": 0,
+      "benign_windows": 150,
+      "false_positives": 0,
+      "fp_rate": 0.0,
+      "median_latency_ms": 3.0,
+      "fp_examples": [],
+      "evasions": []
+    },
+    {
+      "id": "clear_command_history",
+      "title": "Shell history cleared",
+      "file": "rules/candidate/clear_command_history.yml",
+      "attack": [
+        "T1070.003"
+      ],
+      "tactics": [
+        "TA0005"
+      ],
+      "level": "medium",
+      "logsource": "linux/process_creation",
+      "status": "validated",
+      "broken_reason": null,
+      "unmapped_fields": [],
+      "atomics": [
+        "T1070.003-1"
+      ],
+      "attack_windows": 2,
+      "true_positives": 2,
+      "missed": 0,
+      "benign_windows": 150,
+      "false_positives": 0,
+      "fp_rate": 0.0,
+      "median_latency_ms": 0.5,
+      "fp_examples": [],
+      "evasions": []
+    },
+    {
+      "id": "credentials_in_files",
+      "title": "Credential search across files",
+      "file": "rules/candidate/credentials_in_files.yml",
+      "attack": [
+        "T1552.001"
+      ],
+      "tactics": [
+        "TA0006"
+      ],
+      "level": "medium",
+      "logsource": "linux/process_creation",
+      "status": "validated",
+      "broken_reason": null,
+      "unmapped_fields": [],
+      "atomics": [
+        "T1552.001-1"
+      ],
+      "attack_windows": 2,
+      "true_positives": 2,
+      "missed": 0,
+      "benign_windows": 150,
+      "false_positives": 0,
+      "fp_rate": 0.0,
+      "median_latency_ms": 3.0,
+      "fp_examples": [],
+      "evasions": []
+    },
+    {
+      "id": "cron_persistence",
+      "title": "Cron persistence activity",
+      "file": "rules/candidate/cron_persistence.yml",
+      "attack": [
+        "T1053.003"
+      ],
+      "tactics": [
+        "TA0003"
+      ],
+      "level": "medium",
+      "logsource": "linux/process_creation",
+      "status": "noisy",
+      "broken_reason": null,
+      "unmapped_fields": [],
+      "atomics": [
+        "T1053.003-1"
+      ],
+      "attack_windows": 2,
+      "true_positives": 2,
+      "missed": 0,
+      "benign_windows": 150,
+      "false_positives": 9,
+      "fp_rate": 0.06,
+      "median_latency_ms": 1.0,
+      "fp_examples": [
+        {
+          "window": "cron_maintenance",
+          "cmdline": "ls -la /etc/cron.d",
+          "exe": "/usr/bin/ls"
+        },
+        {
+          "window": "cron_maintenance",
+          "cmdline": "crontab -l",
+          "exe": "/usr/bin/crontab"
+        },
+        {
+          "window": "cron_maintenance",
+          "cmdline": "crontab -l",
+          "exe": "/usr/bin/crontab"
+        }
+      ],
+      "evasions": []
+    },
+    {
+      "id": "disable_security_tools",
+      "title": "Security tooling disabled",
+      "file": "rules/candidate/disable_security_tools.yml",
+      "attack": [
+        "T1562.001"
+      ],
+      "tactics": [
+        "TA0005"
+      ],
+      "level": "high",
+      "logsource": "linux/process_creation",
+      "status": "unfirable",
+      "broken_reason": null,
+      "unmapped_fields": [],
+      "atomics": [
+        "T1562.001-1"
+      ],
+      "attack_windows": 2,
+      "true_positives": 0,
+      "missed": 2,
+      "benign_windows": 150,
+      "false_positives": 0,
+      "fp_rate": 0.0,
+      "median_latency_ms": null,
+      "fp_examples": [],
+      "evasions": []
+    },
+    {
+      "id": "driver_load_module",
+      "title": "Kernel driver loaded",
+      "file": "rules/candidate/driver_load_module.yml",
+      "attack": [
+        "T1547.006"
+      ],
+      "tactics": [
+        "TA0003"
+      ],
+      "level": "high",
+      "logsource": "linux/driver_load",
+      "status": "unfirable",
+      "broken_reason": null,
+      "unmapped_fields": [],
+      "atomics": [
+        "T1547.006-1"
+      ],
+      "attack_windows": 2,
+      "true_positives": 0,
+      "missed": 2,
+      "benign_windows": 150,
+      "false_positives": 0,
+      "fp_rate": 0.0,
+      "median_latency_ms": null,
+      "fp_examples": [],
+      "evasions": []
+    },
+    {
+      "id": "external_http_beacon",
+      "title": "HTTP request to external host",
+      "file": "rules/candidate/external_http_beacon.yml",
+      "attack": [
+        "T1071.001"
+      ],
+      "tactics": [
+        "TA0011"
+      ],
+      "level": "medium",
+      "logsource": "linux/process_creation",
+      "status": "validated",
+      "broken_reason": null,
+      "unmapped_fields": [],
+      "atomics": [
+        "T1071.001-1"
+      ],
+      "attack_windows": 2,
+      "true_positives": 2,
+      "missed": 0,
+      "benign_windows": 150,
+      "false_positives": 0,
+      "fp_rate": 0.0,
+      "median_latency_ms": 0.5,
+      "fp_examples": [],
+      "evasions": []
+    },
+    {
+      "id": "file_discovery_find",
+      "title": "File and directory discovery via find",
+      "file": "rules/candidate/file_discovery_find.yml",
+      "attack": [
+        "T1083"
+      ],
+      "tactics": [
+        "TA0007"
+      ],
+      "level": "low",
+      "logsource": "linux/process_creation",
+      "status": "noisy",
+      "broken_reason": null,
+      "unmapped_fields": [],
+      "atomics": [
+        "T1083-1"
+      ],
+      "attack_windows": 2,
+      "true_positives": 2,
+      "missed": 0,
+      "benign_windows": 150,
+      "false_positives": 9,
+      "fp_rate": 0.06,
+      "median_latency_ms": 1.0,
+      "fp_examples": [
+        {
+          "window": "ci_build",
+          "cmdline": "find /usr/include -name *.h",
+          "exe": "/usr/bin/find"
+        },
+        {
+          "window": "ci_build",
+          "cmdline": "find /usr/include -name *.h",
+          "exe": "/usr/bin/find"
+        },
+        {
+          "window": "log_rotate",
+          "cmdline": "find /tmp -name *.1 -delete",
+          "exe": "/usr/bin/find"
+        }
+      ],
+      "evasions": []
+    },
+    {
+      "id": "ingress_tool_transfer_curl",
+      "title": "Ingress tool transfer via curl or wget",
+      "file": "rules/candidate/ingress_tool_transfer_curl.yml",
+      "attack": [
+        "T1105"
+      ],
+      "tactics": [
+        "TA0011"
+      ],
+      "level": "medium",
+      "logsource": "linux/process_creation",
+      "status": "noisy",
+      "broken_reason": null,
+      "unmapped_fields": [],
+      "atomics": [
+        "T1105-1",
+        "T1105-2"
+      ],
+      "attack_windows": 4,
+      "true_positives": 4,
+      "missed": 0,
+      "benign_windows": 150,
+      "false_positives": 5,
+      "fp_rate": 0.03333333333333333,
+      "median_latency_ms": 1.0,
+      "fp_examples": [
+        {
+          "window": "web_health",
+          "cmdline": "wget -q -T 2 -O /dev/null http://127.0.0.1/",
+          "exe": "/usr/bin/wget"
+        },
+        {
+          "window": "web_health",
+          "cmdline": "wget -q -T 2 -O /dev/null http://127.0.0.1/",
+          "exe": "/usr/bin/wget"
+        },
+        {
+          "window": "web_health",
+          "cmdline": "wget -q -T 2 -O /dev/null http://127.0.0.1/",
+          "exe": "/usr/bin/wget"
+        }
+      ],
+      "evasions": [
+        {
+          "variant": "renamed_curl",
+          "atomic": "T1105-1",
+          "evaded": true
+        }
+      ]
+    },
+    {
+      "id": "kernel_module_load_exec",
+      "title": "Kernel module load via insmod or modprobe",
+      "file": "rules/candidate/kernel_module_load_exec.yml",
+      "attack": [
+        "T1547.006"
+      ],
+      "tactics": [
+        "TA0003"
+      ],
+      "level": "high",
+      "logsource": "linux/process_creation",
+      "status": "validated",
+      "broken_reason": null,
+      "unmapped_fields": [],
+      "atomics": [
+        "T1547.006-1"
+      ],
+      "attack_windows": 2,
+      "true_positives": 2,
+      "missed": 0,
+      "benign_windows": 150,
+      "false_positives": 0,
+      "fp_rate": 0.0,
+      "median_latency_ms": 0.5,
+      "fp_examples": [],
+      "evasions": []
+    },
+    {
+      "id": "local_account_discovery",
+      "title": "Local account discovery via passwd read",
+      "file": "rules/candidate/local_account_discovery.yml",
+      "attack": [
+        "T1087.001"
+      ],
+      "tactics": [
+        "TA0007"
+      ],
+      "level": "low",
+      "logsource": "linux/process_creation",
+      "status": "validated",
+      "broken_reason": null,
+      "unmapped_fields": [],
+      "atomics": [
+        "T1087.001-1"
+      ],
+      "attack_windows": 2,
+      "true_positives": 2,
+      "missed": 0,
+      "benign_windows": 150,
+      "false_positives": 0,
+      "fp_rate": 0.0,
+      "median_latency_ms": 1.0,
+      "fp_examples": [],
+      "evasions": []
+    },
+    {
+      "id": "permissive_chmod",
+      "title": "Overly permissive file mode set",
+      "file": "rules/candidate/permissive_chmod.yml",
+      "attack": [
+        "T1222.002"
+      ],
+      "tactics": [
+        "TA0005"
+      ],
+      "level": "medium",
+      "logsource": "linux/process_creation",
+      "status": "validated",
+      "broken_reason": null,
+      "unmapped_fields": [],
+      "atomics": [
+        "T1222.002-1"
+      ],
+      "attack_windows": 2,
+      "true_positives": 2,
+      "missed": 0,
+      "benign_windows": 150,
+      "false_positives": 0,
+      "fp_rate": 0.0,
+      "median_latency_ms": 1.0,
+      "fp_examples": [],
+      "evasions": []
+    },
+    {
+      "id": "process_discovery_ps",
+      "title": "Process discovery via ps",
+      "file": "rules/candidate/process_discovery_ps.yml",
+      "attack": [
+        "T1057"
+      ],
+      "tactics": [
+        "TA0007"
+      ],
+      "level": "low",
+      "logsource": "linux/process_creation",
+      "status": "noisy",
+      "broken_reason": null,
+      "unmapped_fields": [],
+      "atomics": [
+        "T1057-1"
+      ],
+      "attack_windows": 2,
+      "true_positives": 2,
+      "missed": 0,
+      "benign_windows": 150,
+      "false_positives": 2,
+      "fp_rate": 0.013333333333333334,
+      "median_latency_ms": 1.5,
+      "fp_examples": [
+        {
+          "window": "admin_recon",
+          "cmdline": "ps aux",
+          "exe": "/usr/bin/ps"
+        },
+        {
+          "window": "admin_recon",
+          "cmdline": "ps aux",
+          "exe": "/usr/bin/ps"
+        }
+      ],
+      "evasions": []
+    },
+    {
+      "id": "ptrace_process_injection",
+      "title": "Process injection via ptrace",
+      "file": "rules/candidate/ptrace_process_injection.yml",
+      "attack": [
+        "T1055.008"
+      ],
+      "tactics": [
+        "TA0005"
+      ],
+      "level": "high",
+      "logsource": "linux/process_access",
+      "status": "validated",
+      "broken_reason": null,
+      "unmapped_fields": [],
+      "atomics": [
+        "T1055.008-1"
+      ],
+      "attack_windows": 2,
+      "true_positives": 2,
+      "missed": 0,
+      "benign_windows": 150,
+      "false_positives": 0,
+      "fp_rate": 0.0,
+      "median_latency_ms": 32.5,
+      "fp_examples": [],
+      "evasions": []
+    },
+    {
+      "id": "shadow_file_read",
+      "title": "Shadow file accessed",
+      "file": "rules/candidate/shadow_file_read.yml",
+      "attack": [
+        "T1003.008"
+      ],
+      "tactics": [
+        "TA0006"
+      ],
+      "level": "high",
+      "logsource": "linux/file_event",
+      "status": "unfirable",
+      "broken_reason": null,
+      "unmapped_fields": [],
+      "atomics": [
+        "T1003.008-1"
+      ],
+      "attack_windows": 2,
+      "true_positives": 0,
+      "missed": 2,
+      "benign_windows": 150,
+      "false_positives": 0,
+      "fp_rate": 0.0,
+      "median_latency_ms": null,
+      "fp_examples": [],
+      "evasions": []
+    },
+    {
+      "id": "shell_spawned_by_sshd",
+      "title": "Shell spawned by sshd",
+      "file": "rules/candidate/shell_spawned_by_sshd.yml",
+      "attack": [
+        "T1059.004"
+      ],
+      "tactics": [
+        "TA0002"
+      ],
+      "level": "medium",
+      "logsource": "linux/process_creation",
+      "status": "unfirable",
+      "broken_reason": null,
+      "unmapped_fields": [],
+      "atomics": [
+        "T1059.004-1",
+        "T1059.004-2"
+      ],
+      "attack_windows": 4,
+      "true_positives": 0,
+      "missed": 4,
+      "benign_windows": 150,
+      "false_positives": 0,
+      "fp_rate": 0.0,
+      "median_latency_ms": null,
+      "fp_examples": [],
+      "evasions": []
+    },
+    {
+      "id": "sudo_privilege_enum",
+      "title": "Sudo privilege enumeration",
+      "file": "rules/candidate/sudo_privilege_enum.yml",
+      "attack": [
+        "T1548.003"
+      ],
+      "tactics": [
+        "TA0004"
+      ],
+      "level": "low",
+      "logsource": "linux/process_creation",
+      "status": "validated",
+      "broken_reason": null,
+      "unmapped_fields": [],
+      "atomics": [
+        "T1548.003-1"
+      ],
+      "attack_windows": 2,
+      "true_positives": 2,
+      "missed": 0,
+      "benign_windows": 150,
+      "false_positives": 0,
+      "fp_rate": 0.0,
+      "median_latency_ms": 1.0,
+      "fp_examples": [],
+      "evasions": []
+    },
+    {
+      "id": "sysinfo_discovery",
+      "title": "System information discovery via uname",
+      "file": "rules/candidate/sysinfo_discovery.yml",
+      "attack": [
+        "T1082"
+      ],
+      "tactics": [
+        "TA0007"
+      ],
+      "level": "low",
+      "logsource": "linux/process_creation",
+      "status": "noisy",
+      "broken_reason": null,
+      "unmapped_fields": [],
+      "atomics": [
+        "T1082-1"
+      ],
+      "attack_windows": 2,
+      "true_positives": 2,
+      "missed": 0,
+      "benign_windows": 150,
+      "false_positives": 26,
+      "fp_rate": 0.17333333333333334,
+      "median_latency_ms": 1.0,
+      "fp_examples": [
+        {
+          "window": "config_edit",
+          "cmdline": "cp /etc/os-release /tmp/os.conf",
+          "exe": "/usr/bin/cp"
+        },
+        {
+          "window": "config_edit",
+          "cmdline": "diff /etc/os-release /tmp/os.conf",
+          "exe": "/usr/bin/diff"
+        },
+        {
+          "window": "admin_recon",
+          "cmdline": "uname -r",
+          "exe": "/usr/bin/uname"
+        }
+      ],
+      "evasions": []
+    },
+    {
+      "id": "unix_shell_recon_oneliner_v2",
+      "title": "Unix shell reconnaissance one-liner",
+      "file": "rules/candidate/unix_shell_recon_oneliner_v2.yml",
+      "attack": [
+        "T1059.004"
+      ],
+      "tactics": [
+        "TA0002"
+      ],
+      "level": "medium",
+      "logsource": "linux/process_creation",
+      "status": "partial",
+      "broken_reason": null,
+      "unmapped_fields": [],
+      "atomics": [
+        "T1059.004-1",
+        "T1059.004-2"
+      ],
+      "attack_windows": 4,
+      "true_positives": 2,
+      "missed": 2,
+      "benign_windows": 150,
+      "false_positives": 0,
+      "fp_rate": 0.0,
+      "median_latency_ms": 0.5,
+      "fp_examples": [],
+      "evasions": [
+        {
+          "variant": "renamed_binary",
+          "atomic": "T1059.004-1",
+          "evaded": true
+        },
+        {
+          "variant": "env_indirection",
+          "atomic": "T1059.004-1",
+          "evaded": false
+        }
+      ]
+    },
+    {
+      "id": "win_lsass_memory_access",
+      "title": "LSASS memory access (Sysmon)",
+      "file": "rules/candidate/win_lsass_memory_access.yml",
+      "attack": [
+        "T1003.001"
+      ],
+      "tactics": [
+        "TA0006"
+      ],
+      "level": "high",
+      "logsource": "windows/process_access/sysmon",
+      "status": "broken",
+      "broken_reason": "unmapped fields: GrantedAccess",
+      "unmapped_fields": [
+        "GrantedAccess"
+      ],
+      "atomics": [
+        "T1003.008-1"
+      ],
+      "attack_windows": 2,
+      "true_positives": 0,
+      "missed": 0,
+      "benign_windows": 150,
+      "false_positives": 0,
+      "fp_rate": null,
+      "median_latency_ms": null,
+      "fp_examples": [],
+      "evasions": []
+    },
+    {
+      "id": "win_registry_run_key",
+      "title": "Registry run key persistence (Sysmon)",
+      "file": "rules/candidate/win_registry_run_key.yml",
+      "attack": [
+        "T1547.001"
+      ],
+      "tactics": [
+        "TA0003"
+      ],
+      "level": "medium",
+      "logsource": "windows/registry_set/sysmon",
+      "status": "broken",
+      "broken_reason": "unmapped fields: Details, TargetObject",
+      "unmapped_fields": [
+        "Details",
+        "TargetObject"
+      ],
+      "atomics": [
+        "T1547.006-1"
+      ],
+      "attack_windows": 2,
+      "true_positives": 0,
+      "missed": 0,
+      "benign_windows": 150,
+      "false_positives": 0,
+      "fp_rate": null,
+      "median_latency_ms": null,
+      "fp_examples": [],
+      "evasions": []
+    },
+    {
+      "id": "win_rundll32_unsigned",
+      "title": "Suspicious rundll32 execution (Sysmon)",
+      "file": "rules/candidate/win_rundll32_unsigned.yml",
+      "attack": [
+        "T1218.011"
+      ],
+      "tactics": [
+        "TA0005"
+      ],
+      "level": "high",
+      "logsource": "windows/process_creation/sysmon",
+      "status": "broken",
+      "broken_reason": "unmapped fields: Hashes, IntegrityLevel",
+      "unmapped_fields": [
+        "Hashes",
+        "IntegrityLevel"
+      ],
+      "atomics": [],
+      "attack_windows": 0,
+      "true_positives": 0,
+      "missed": 0,
+      "benign_windows": 150,
+      "false_positives": 0,
+      "fp_rate": null,
+      "median_latency_ms": null,
+      "fp_examples": [],
+      "evasions": []
+    },
+    {
+      "id": "win_scheduled_task_persistence",
+      "title": "Scheduled task created (Windows)",
+      "file": "rules/candidate/win_scheduled_task_persistence.yml",
+      "attack": [
+        "T1053.005"
+      ],
+      "tactics": [
+        "TA0003"
+      ],
+      "level": "medium",
+      "logsource": "windows/security",
+      "status": "broken",
+      "broken_reason": "unmapped fields: EventID, TaskName",
+      "unmapped_fields": [
+        "EventID",
+        "TaskName"
+      ],
+      "atomics": [
+        "T1053.003-1"
+      ],
+      "attack_windows": 2,
+      "true_positives": 0,
+      "missed": 0,
+      "benign_windows": 150,
+      "false_positives": 0,
+      "fp_rate": null,
+      "median_latency_ms": null,
+      "fp_examples": [],
+      "evasions": []
+    }
+  ],
+  "coverage": {
+    "tactics": {
+      "TA0009": {
+        "name": "Collection",
+        "techniques": {
+          "T1560.001": {
+            "status": "noisy",
+            "rules": 1
+          }
+        }
+      },
+      "TA0005": {
+        "name": "Defense Evasion",
+        "techniques": {
+          "T1140": {
+            "status": "validated",
+            "rules": 1
+          },
+          "T1070.003": {
+            "status": "validated",
+            "rules": 1
+          },
+          "T1562.001": {
+            "status": "unfirable",
+            "rules": 1
+          },
+          "T1222.002": {
+            "status": "validated",
+            "rules": 1
+          },
+          "T1055.008": {
+            "status": "validated",
+            "rules": 1
+          },
+          "T1218.011": {
+            "status": "broken",
+            "rules": 1
+          }
+        }
+      },
+      "TA0006": {
+        "name": "Credential Access",
+        "techniques": {
+          "T1552.001": {
+            "status": "validated",
+            "rules": 1
+          },
+          "T1003.008": {
+            "status": "unfirable",
+            "rules": 1
+          },
+          "T1003.001": {
+            "status": "broken",
+            "rules": 1
+          }
+        }
+      },
+      "TA0003": {
+        "name": "Persistence",
+        "techniques": {
+          "T1053.003": {
+            "status": "noisy",
+            "rules": 1
+          },
+          "T1547.006": {
+            "status": "validated",
+            "rules": 2
+          },
+          "T1547.001": {
+            "status": "broken",
+            "rules": 1
+          },
+          "T1053.005": {
+            "status": "broken",
+            "rules": 1
+          }
+        }
+      },
+      "TA0011": {
+        "name": "Command and Control",
+        "techniques": {
+          "T1071.001": {
+            "status": "validated",
+            "rules": 1
+          },
+          "T1105": {
+            "status": "noisy",
+            "rules": 1
+          }
+        }
+      },
+      "TA0007": {
+        "name": "Discovery",
+        "techniques": {
+          "T1083": {
+            "status": "noisy",
+            "rules": 1
+          },
+          "T1087.001": {
+            "status": "validated",
+            "rules": 1
+          },
+          "T1057": {
+            "status": "noisy",
+            "rules": 1
+          },
+          "T1082": {
+            "status": "noisy",
+            "rules": 1
+          }
+        }
+      },
+      "TA0002": {
+        "name": "Execution",
+        "techniques": {
+          "T1059.004": {
+            "status": "partial",
+            "rules": 2
+          }
+        }
+      },
+      "TA0004": {
+        "name": "Privilege Escalation",
+        "techniques": {
+          "T1548.003": {
+            "status": "validated",
+            "rules": 1
+          }
+        }
+      }
+    }
+  },
+  "worst_offenders": [
+    {
+      "rule": "base64_decode_pipe_shell",
+      "fires": "2/2",
+      "fp_rate": "0.00%",
+      "verdict": "ship it"
+    },
+    {
+      "rule": "sysinfo_discovery",
+      "fires": "2/2",
+      "fp_rate": "17.33%",
+      "verdict": "too noisy"
+    },
+    {
+      "rule": "win_lsass_memory_access",
+      "fires": "0/2",
+      "fp_rate": "-",
+      "verdict": "broken, field missing"
+    }
+  ]
+}

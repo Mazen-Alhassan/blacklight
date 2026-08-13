@@ -1,0 +1,21 @@
+# field hypothesis: Touching cron paths. Listing them is benign, so expect false positives.
+title: Cron persistence activity
+id: 5f82318c-cac5-53c1-a6a5-c9d78f7218c8
+status: experimental
+description: Cron persistence activity
+author: rule-synth
+date: 2026/08/12
+tags:
+- attack.persistence
+- attack.t1053.003
+logsource:
+  product: linux
+  category: process_creation
+detection:
+  sel:
+    cmdline|contains:
+    - /etc/cron.d
+    - crontab
+    - /var/spool/cron
+  condition: sel
+level: medium

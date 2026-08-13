@@ -1,0 +1,19 @@
+# field hypothesis: sudo -l to enumerate what the account can run.
+title: Sudo privilege enumeration
+id: 9bff126e-fe94-5d19-89dc-4f57d60702b1
+status: experimental
+description: Sudo privilege enumeration
+author: rule-synth
+date: 2026/08/12
+tags:
+- attack.privilege_escalation
+- attack.t1548.003
+logsource:
+  product: linux
+  category: process_creation
+detection:
+  sel:
+    exe|endswith: /sudo
+    cmdline|contains: ' -l'
+  condition: sel
+level: low

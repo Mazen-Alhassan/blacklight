@@ -1,0 +1,19 @@
+# field hypothesis: HYPOTHESIS: assumes a module_load (finit_module) event. Only fires on a real load, which
+#   does not happen in the container, so this stays unfirable.
+title: Kernel driver loaded
+id: 2c789c7a-be2f-5d22-9a9e-c03b3775775a
+status: experimental
+description: Kernel driver loaded
+author: rule-synth
+date: 2026/08/12
+tags:
+- attack.persistence
+- attack.t1547.006
+logsource:
+  product: linux
+  category: driver_load
+detection:
+  sel:
+    ImageLoaded|endswith: .ko
+  condition: sel
+level: high

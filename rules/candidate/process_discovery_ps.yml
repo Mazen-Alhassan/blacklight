@@ -1,0 +1,21 @@
+# field hypothesis: ps aux for process discovery. Admins run this too, so watch the FP rate.
+title: Process discovery via ps
+id: bde75132-4c10-51c0-9e83-419d1430ece8
+status: experimental
+description: Process discovery via ps
+author: rule-synth
+date: 2026/08/12
+tags:
+- attack.discovery
+- attack.t1057
+logsource:
+  product: linux
+  category: process_creation
+detection:
+  sel:
+    exe|endswith: /ps
+    cmdline|contains:
+    - aux
+    - -ef
+  condition: sel
+level: low

@@ -1,0 +1,18 @@
+# field hypothesis: find sweeping the filesystem. Overlaps backup and build jobs.
+title: File and directory discovery via find
+id: 6632048a-e847-5b69-8a0e-82aeaf81b821
+status: experimental
+description: File and directory discovery via find
+author: rule-synth
+date: 2026/08/12
+tags:
+- attack.discovery
+- attack.t1083
+logsource:
+  product: linux
+  category: process_creation
+detection:
+  sel:
+    exe|endswith: /find
+  condition: sel
+level: low

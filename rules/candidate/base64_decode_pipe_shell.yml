@@ -1,0 +1,21 @@
+# field hypothesis: Decode-and-run: base64 -d piped to a shell.
+title: Base64 payload decoded and executed
+id: e557b379-bf0c-59d8-b359-f34e0322c898
+status: experimental
+description: Base64 payload decoded and executed
+author: rule-synth
+date: 2026/08/12
+tags:
+- attack.defense_evasion
+- attack.t1140
+logsource:
+  product: linux
+  category: process_creation
+detection:
+  sel:
+    cmdline|contains:
+    - base64 -d
+    - base64 --decode
+    - base64 -D
+  condition: sel
+level: medium

@@ -1,0 +1,27 @@
+# field hypothesis: sh -c with a recon chain. Note: will not see recon piped in via stdin.
+title: Unix shell reconnaissance one-liner
+id: 7acac693-a371-5942-86ea-36e0d896542e
+status: experimental
+description: Unix shell reconnaissance one-liner
+author: rule-synth
+date: 2026/08/12
+tags:
+- attack.execution
+- attack.t1059.004
+logsource:
+  product: linux
+  category: process_creation
+detection:
+  shell:
+    exe|endswith:
+    - /sh
+    - /bash
+    - /dash
+    cmdline|contains: -c
+  recon:
+    cmdline|contains:
+    - id
+    - whoami
+    - uname
+  condition: shell and recon
+level: medium
