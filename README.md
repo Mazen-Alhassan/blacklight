@@ -31,15 +31,42 @@ make report                    # coverage matrix and worst offenders
 
 ## How it works
 
-**The lab.** Docker Compose brings up two containers against one kernel: a privileged sensor running auditd with `pid=host`, and an unprivileged-looking target where attacks and benign work run. auditd is the only sensor. It covers process execution, outbound connect, ptrace, kernel module load, and file watches from a single vocabulary, which keeps the field-availability analysis honest instead of spread across two agents.
+**The lab**
+- Docker Compose runs two containers against one kernel.
+- A privileged sensor runs auditd with `pid=host`.
+- A normal-looking target runs the attacks and the benign work.
+- auditd is the only sensor. One vocabulary covers process execution, outbound connect, ptrace, kernel module load, and file watches.
+- One sensor keeps the field-availability analysis honest instead of split across two agents.
 
-**Windows without a clock.** The executor never times a window by reading a clock. It runs a uniquely named sentinel process before and after each activity (`/bin/true __LWSTART_<uuid>__`), and the sensor records those like any other exec. The normalizer bounds the window from the sentinel timestamps and attributes events by walking the process tree from the shell the executor spawned. That removes clock skew between the orchestrator, the target, and the sensor, and it separates lab activity from the Docker machinery the sensor also sees.
+**Windows without a clock**
+- The executor never times a window by reading a clock.
+- It runs a uniquely named sentinel before and after each activity (`/bin/true __LWSTART_<uuid>__`).
+- The sensor records those sentinels like any other exec.
+- The normalizer bounds the window from the sentinel timestamps.
+- It attributes events by walking the process tree from the shell the executor spawned.
+- That removes clock skew between the orchestrator, the target, and the sensor.
+- It also separates lab activity from the Docker machinery the sensor also sees.
 
-**The engine.** `engine/pipeline.py` maps Sigma field names onto the telemetry columns. It is the single description of what the lab carries. A rule that names a field not in that map is `broken` before any query runs, and the report names the missing field. pySigma compiles the rest to SQL over the events table.
+**The engine**
+- `engine/pipeline.py` maps Sigma field names onto the telemetry columns.
+- That map is the single description of what the lab actually carries.
+- A rule naming a field not in the map is `broken` before any query runs, and the report names the missing field.
+- pySigma compiles everything else to SQL over the events table.
 
-**The score.** Each rule gets a status: `validated` (fires on every attack window for its technique, false positive rate at or under 1%), `noisy` (fires but too many false positives), `partial` (fires on some windows), `unfirable` (fields are all present but it never fired), `broken` (a field is missing), `untested` (no atomic exercises it). The taxonomy is fixed in `docs/SPEC.md` before the numbers were seen.
+**The score** — every rule lands in exactly one bucket:
+- `validated` — fires on every attack window for its technique, false positive rate at or under 1%
+- `noisy` — fires on the attack, but too many false positives
+- `partial` — fires on some attack windows, not all
+- `unfirable` — every field is present, but it never fired
+- `broken` — references a field the lab does not carry
+- `untested` — no atomic exercises it
 
-Read `docs/SPEC.md` and `docs/ARCHITECTURE.md` for the schema and the design arguments. `FINDINGS.md` is the writeup of what this run actually found.
+The taxonomy is fixed in `docs/SPEC.md` before any numbers were seen.
+
+**Where to read more**
+- `docs/SPEC.md` — the spec and the locked data schema
+- `docs/ARCHITECTURE.md` — module boundaries and the design arguments
+- `FINDINGS.md` — what this run actually found, in full
 
 ## Known limitations
 
