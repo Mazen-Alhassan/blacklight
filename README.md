@@ -3,7 +3,6 @@
 *Detection rules that prove they fire. Every Sigma rule in this repo is validated against live attack telemetry, so the ones that silently never fire get flagged instead of sitting in the repo looking like coverage.*
 
 ![blacklight hero: 9 of 24 rules validated, coverage matrix, worst offenders](docs/hero.svg)
-![blacklight hero: 9 of 24 rules validated, coverage matrix, worst offenders](docs/hero2.svg)
 
 
 **[Open the full interactive report →](https://mazen-alhassan.github.io/blacklight/report.html)**
