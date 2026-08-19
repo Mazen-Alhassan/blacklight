@@ -1,6 +1,6 @@
 # blacklight
 
-*Detection rules that prove they fire. Every Sigma rule in this repo is validated against live attack telemetry, so the ones that silently never fire get flagged instead of sitting in the repo looking like coverage.*
+Detection rules that prove they fire. Every Sigma rule in this repo is validated against live attack telemetry, so the ones that silently never fire get flagged instead of sitting in the repo looking like coverage.
 
 ![blacklight design notes: the hand-drawn plan for the rule synthesis, validation harness, and scoring pipeline](docs/hero2.jpg)
 
