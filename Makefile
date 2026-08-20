@@ -23,6 +23,13 @@ hero: report
 hero-svg:
 	python -m report.hero_svg data/results.json docs/hero.svg
 
+# Notebook hero: the 24 rules before and after the lab ran, drawn as a
+# marked-up page instead of a dashboard. The SVG uses a handwriting face that
+# most machines lack, so the README points at the rendered PNG.
+hero-notebook:
+	python -m report.hero_notebook data/results.json docs/hero-notebook.svg
+	report/svg2png.sh docs/hero-notebook.svg docs/hero-notebook.png 2000 1000
+
 # Re-score the committed telemetry without Docker.
 rescore:
 	python -m scoring.rescore --rules rules/candidate --out data/results.json
