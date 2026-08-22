@@ -4,18 +4,7 @@ Detection rules that prove they actually fire. I wrote 24 Sigma rules, ran real 
 
 ![blacklight design notes — the hand-drawn plan for rule synthesis, the validation harness, and the scoring pipeline](docs/hero2.jpg)
 
-<details>
-<summary><b>Click for the formal report</b></summary>
-
-<br>
-
-[![24 candidate Sigma rules went in, 9 came out validated — 6 noisy, 4 unfirable, 4 broken against fields this lab does not carry](docs/hero-notebook.png)](https://mazen-alhassan.github.io/blacklight/report.html)
-
-**[Open the full interactive report →](https://mazen-alhassan.github.io/blacklight/report.html)**
-
-The long version of what this run found is in [FINDINGS.md](FINDINGS.md).
-
-</details>
+![blacklight results: 9 of 24 rules validated, the coverage matrix, and the worst offenders](docs/hero.svg)
 
 ## The problem
 
